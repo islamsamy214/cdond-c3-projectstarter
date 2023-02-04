@@ -134,9 +134,9 @@ jobs:
           command: |
             cd backend
             npm install
-            # npm audit fix --audit-level=critical --force
+            npm audit fix --audit-level=critical --force
             # intentional error to fail for sending notifications
-            npm audit --audit-level=critical
+            # npm audit --audit-level=critical
       - save_cache:
           paths: [backend/node_modules]
           key: backend-scan
