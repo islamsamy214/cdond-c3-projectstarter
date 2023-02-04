@@ -32,6 +32,9 @@ commands:
               exit 1
             fi
 
+orbs:
+  slack: circleci/slack@4.12.1
+
 jobs:
   build-frontend:
     docker:
@@ -131,10 +134,16 @@ jobs:
           command: |
             cd backend
             npm install
-            npm audit fix --audit-level=critical --force
+            # npm audit fix --audit-level=critical --force
+            # intentional error to fail for sending notifications
+            npm audit --audit-level=critical
       - save_cache:
           paths: [backend/node_modules]
           key: backend-scan
+      - slack/notify:
+          event: fail
+          template: basic_fail_1
+
 workflows:
   default:
     jobs:
@@ -148,3 +157,4 @@ workflows:
           requires: [build-frontend]
       - scan-backend:
           requires: [build-backend]
+          context: slack-secrets
