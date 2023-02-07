@@ -188,10 +188,6 @@ jobs:
       - checkout
       - add_ssh_keys:
           fingerprints: ["c2:b0:e9:2a:ce:fa:6f:00:fd:73:df:9f:02:f2:1d:91"]
-      - persist_to_workspace:
-          root: ~/
-          paths:
-            - project/.circleci/ansible/ansible.cfg
       - run:
           name: Install Ansible
           command: |
@@ -200,7 +196,7 @@ jobs:
           name: Run Playbook and Configure server
           command: |
               cd .circleci/ansible
-              ansible-playbook -i inventory configure-server.yml
+              ansible-playbook -i inventory configure-server.yml -c ansible.cfg
 
 workflows:
   default:
