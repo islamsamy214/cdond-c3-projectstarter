@@ -25,7 +25,6 @@
           - update
           - upgrade
           - python3
-          state: latest
           update_cache: yes
     # Your code here
 
