@@ -174,10 +174,10 @@ jobs:
       #     command: |
       #       # Your code here
       #       exit 1
-      - persist_to_workspace:
-          root: ~/
-          paths:
-            - project/.circleci/ansible/inventory
+      # - persist_to_workspace:
+      #     root: ~/
+      #     paths:
+      #       - project/.circleci/ansible/inventory
       # Here's where you will add some code to rollback on failure
       - destroy-environment
 
