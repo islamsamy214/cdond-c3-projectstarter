@@ -20,8 +20,6 @@
       become: yes
       apt:
         name:
-          - update
-          - upgrade
           - python3
         update_cache: yes
 
