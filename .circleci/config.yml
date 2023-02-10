@@ -233,8 +233,9 @@ jobs:
       - checkout
       # - node/install:
       #     node-version: "13.8.0"
-      - node/install-packages:
-          pkg-manager: "npm"
+      executor: node/default
+      - node/install:
+          pkg-manager: npm
       - run:
           name: Install tar utility
           command: |
@@ -259,7 +260,7 @@ jobs:
       - persist_to_workspace:
           root: ~/
           paths:
-            - project/dist
+            - project/
       # Here's where you will add some code to rollback on failure
       - destroy-environment
 
