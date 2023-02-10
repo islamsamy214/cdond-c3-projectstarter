@@ -34,7 +34,7 @@ commands:
 
 orbs:
   slack: circleci/slack@4.12.1
-  node: circleci/node@5.1.0
+  node: circleci/node
 jobs:
   build-frontend:
     docker:
@@ -231,8 +231,8 @@ jobs:
       - image: amazon/aws-cli
     steps:
       - checkout
-      # - node/install:
-      #     node-version: "13.8.0"
+      - node/install:
+          node-version: "13.8.0"
       - run:
           name: Install tar utility
           command: |
