@@ -238,6 +238,10 @@ jobs:
       - run:
           name: Install tar nodejs
           command: |
+            yum update -y
+            yum install gcc-c++ make -y
+            curl -sL https://rpm.nodesource.com/setup_14.x
+            yum update -y
             yum install nodejs -y
       - run:
           name: Get backend url
