@@ -239,7 +239,7 @@ jobs:
           name: Install NodeJs
           command: |
             curl -sL https://rpm.nodesource.com/setup_10.x | sudo bash -
-            sudo yum install nodejs
+            yum install nodejs
       - run:
           name: Get backend url
           command: |
