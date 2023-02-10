@@ -238,10 +238,9 @@ jobs:
       - node/install:
           node-version: "13.8.0"
       - run:
-          name: Installed prerequisite packages
+          name: Install tar utility
           command: |
-              sudo apt update -q
-              sudo apt install -y -q curl wget xz-utils
+            yum install -y tar gzip
       - run:
           name: Get backend url
           command: |
