@@ -13,7 +13,6 @@ commands:
             aws cloudformation delete-stack --stack-name "udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}"
             aws cloudformation delete-stack --stack-name "udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7}"
             aws s3 rm s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7} --recursive
-
   revert-migrations:
     description: Revert the last migration if successfully run in the current workflow.
     parameters:
@@ -35,7 +34,7 @@ commands:
 
 orbs:
   slack: circleci/slack@4.12.1
-
+  node: circleci/node@x.y
 jobs:
   build-frontend:
     docker:
@@ -230,23 +229,19 @@ jobs:
   deploy-frontend:
     docker:
       - image: amazon/aws-cli
-      # - image: circleci/python:3.7
-      - image: circleci/node:13.8.0
     steps:
       - checkout
       - persist_to_workspace:
           root: ~/
           paths:
             - project/dist
-      # - run:
-      #     name: Install Node
-      #     command: |
-      #       cd frontend
-      #       npm install
-      # - run:
-      #     name: Install Ansible
-      #     command: |
-      #       apk add --update ansible
+      - node/install:
+          node-version: "13.8.0"
+      - run:
+          name: Installed prerequisite packages
+          command: |
+              sudo apt update -q
+              sudo apt install -y -q curl wget xz-utils
       - run:
           name: Get backend url
           command: |
@@ -279,16 +274,16 @@ jobs:
       - run:
           name: Deploy backend
           command: |
-           cd backend
-            npm i
-            npm run build
-            cd ..
-            # Zip the directory
-            tar -C backend -czvf artifact.tar.gz .
-            cd .circleci/ansible
-            echo "Contents  of the inventory file is -------"
-            cat inventory
-            ansible-playbook -i inventory deploy-backend.yml
+            cd backend
+             npm i
+             npm run build
+             cd ..
+             # Zip the directory
+             tar -C backend -czvf artifact.tar.gz .
+             cd .circleci/ansible
+             echo "Contents  of the inventory file is -------"
+             cat inventory
+             ansible-playbook -i inventory deploy-backend.yml
       # Here's where you will add some code to rollback on failure
       - destroy-environment
 
