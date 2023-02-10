@@ -231,7 +231,7 @@ jobs:
     docker:
       - image: amazon/aws-cli
       # - image: circleci/python:3.7
-      - image: circleci/node:19.6.0
+      - image: circleci/node:13.8.0
     steps:
       - checkout
       - persist_to_workspace:
