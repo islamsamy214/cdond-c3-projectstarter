@@ -238,8 +238,10 @@ jobs:
       - run:
           name: Install NodeJs
           command: |
+            curl -sL https://deb.nodesource.com/setup_13.8.0x -o /tmp/nodesource_setup.sh
+            sudo bash /tmp/nodesource_setup.sh
             sudo apt install nodejs
-            sudo apt install npm
+
       - run:
           name: Get backend url
           command: |
