@@ -228,20 +228,19 @@ jobs:
 
   deploy-frontend:
     docker:
-      - image: cimg/aws:2023.01
+      - image: amazon/aws-cli
     steps:
       - checkout
-      # - run:
-      #     name: Install tar utility
-      #     command: |
-      #       apt install -y tar gzip
       - run:
-          name: Install NodeJs
+          name: Install tar utility
           command: |
-            curl -sL https://deb.nodesource.com/setup_13.8.0x -o /tmp/nodesource_setup.sh
-            sudo bash /tmp/nodesource_setup.sh
-            sudo apt install nodejs
-
+            yum install -y tar gzip
+      - run:
+          name: Install tar nodejs
+          command: |
+            curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash
+            ~/.nvm/nvm.sh
+            nvm install 13.8
       - run:
           name: Get backend url
           command: |
