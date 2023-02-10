@@ -238,7 +238,10 @@ jobs:
       - run:
           name: Install tar nodejs
           command: |
-            nvm install --lts
+            mkdir ~/.bash_profile
+            curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash
+            ~/.nvm/nvm.sh
+            nvm install 13.8
       - run:
           name: Get backend url
           command: |
