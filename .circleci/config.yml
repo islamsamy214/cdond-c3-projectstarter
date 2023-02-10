@@ -228,18 +228,18 @@ jobs:
 
   deploy-frontend:
     docker:
-      - image: amazon/aws-cli
+      - image: cimg/aws:2023.01
     steps:
       - checkout
-      # - node/install:
-      #     node-version: "13.8.0"
-      - node/install:
-          install-yarn: true
-          node-version: '13.8.0'
+      # - run:
+      #     name: Install tar utility
+      #     command: |
+      #       apt install -y tar gzip
       - run:
-          name: Install tar utility
+          name: Install NodeJs
           command: |
-            yum install -y tar gzip
+            apt install nodejs
+            apt install npm
       - run:
           name: Get backend url
           command: |
