@@ -235,14 +235,6 @@ jobs:
           name: Install tar utility
           command: |
             sudo apt-get install tar -y
-      # - run:
-      #     name: Install nodejs
-      #     command: |
-      #       yum update -y
-      #       yum install gcc-c++ make -y
-      #       curl -sL https://rpm.nodesource.com/setup_14.x
-      #       yum update -y
-      #       yum install nodejs -y
       - run:
           name: Get backend url
           command: |
@@ -306,11 +298,12 @@ workflows:
       # - scan-backend:
       #     requires: [build-backend]
       #     context: slack-secrets
-      # - deploy-infrastructure:
+      - deploy-infrastructure
       #     requires: [test-frontend, test-backend, scan-frontend, scan-backend]
       # - configure-infrastructure:
       #     requires: [deploy-infrastructure]
       # - run-migrations:
       #     requires: [configure-infrastructure]
-      - deploy-frontend
+      - deploy-frontend:
+          requires: [deploy-infrastructure]
           # requires: [run-migrations]
