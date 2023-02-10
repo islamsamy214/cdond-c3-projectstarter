@@ -234,7 +234,7 @@ jobs:
       - checkout
       # - node/install:
       #     node-version: "13.8.0"
-      - node/install:
+      - node/install-packages:
           pkg-manager: "npm"
       - run:
           name: Install tar utility
