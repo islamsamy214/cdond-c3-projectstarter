@@ -229,11 +229,11 @@ jobs:
   deploy-frontend:
     docker:
       - image: amazon/aws-cli
+    executor: "node/default"
     steps:
       - checkout
       # - node/install:
       #     node-version: "13.8.0"
-      executor: "node/default"
       - node/install:
           pkg-manager: "npm"
       - run:
