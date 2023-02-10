@@ -34,7 +34,7 @@ commands:
 
 orbs:
   slack: circleci/slack@4.12.1
-  node: circleci/node@13.8.0
+  node: circleci/node@12.22
 jobs:
   build-frontend:
     docker:
