@@ -229,13 +229,12 @@ jobs:
   deploy-frontend:
     docker:
       - image: amazon/aws-cli
-    executor: "node/default"
     steps:
       - checkout
       # - node/install:
       #     node-version: "13.8.0"
       - node/install:
-          install-npm: true
+          install-yarn: true
           node-version: '13.8.0'
       - run:
           name: Install tar utility
