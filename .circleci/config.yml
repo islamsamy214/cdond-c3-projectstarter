@@ -231,7 +231,8 @@ jobs:
       - image: amazon/aws-cli
     steps:
       - checkout
-      - node/install
+      - node/install:
+          node-version: "13.8.0"
       - run:
           name: Install tar utility
           command: |
