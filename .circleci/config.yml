@@ -11,8 +11,8 @@ commands:
           when: on_fail
           command: |
             aws cloudformation delete-stack --stack-name "udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}"
-            aws cloudformation delete-stack --stack-name "udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7}"
             aws s3 rm s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7} --recursive
+            aws cloudformation delete-stack --stack-name "udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7}"
   revert-migrations:
     description: Revert the last migration if successfully run in the current workflow.
     parameters:
@@ -262,21 +262,34 @@ jobs:
       - checkout
       - add_ssh_keys:
           fingerprints: ["12:3c:b6:61:e4:66:d9:bb:af:85:b3:7d:62:e3:0e:24"]
-      - attach_workspace:
-          at: ~/
+      - run:
+          name: Install tar utility
+          command: |
+            sudo apt-get install tar -y
+      - run:
+          name: Install nodejs
+          command: |
+            sudo apt install nodejs
+            sudo apt install npm
+      - run:
+          name: Install Ansible
+          command: |
+            apk add --update ansible
       - run:
           name: Deploy backend
           command: |
             cd backend
-             npm i
-             npm run build
-             cd ..
-             # Zip the directory
-             tar -C backend -czvf artifact.tar.gz .
-             cd .circleci/ansible
-             echo "Contents  of the inventory file is -------"
-             cat inventory
-             ansible-playbook -i inventory deploy-backend.yml
+            npm i
+            npm run build
+            cd ..
+            # Zip the directory
+            tar -C backend -czvf artifact.tar.gz .
+            cd .circleci/ansible
+            echo "Contents  of the inventory file is -------"
+            cat inventory
+            ansible-playbook -i inventory deploy-backend.yml
+      - attach_workspace:
+          at: ~/
       # Here's where you will add some code to rollback on failure
       - destroy-environment
 
@@ -294,12 +307,12 @@ workflows:
       # - scan-backend:
       #     requires: [build-backend]
       #     context: slack-secrets
-      - deploy-infrastructure
+      # - deploy-infrastructure:
       #     requires: [test-frontend, test-backend, scan-frontend, scan-backend]
       # - configure-infrastructure:
       #     requires: [deploy-infrastructure]
       # - run-migrations:
       #     requires: [configure-infrastructure]
-      - deploy-frontend:
-          requires: [deploy-infrastructure]
+      # - deploy-frontend:
           # requires: [run-migrations]
+        - deploy-backend
