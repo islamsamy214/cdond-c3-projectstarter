@@ -283,7 +283,7 @@ jobs:
             npm run build
             cd ..
             # Zip the directory
-            tar -C .circleci/ansible/roles/deploy/files/ -czvf artifact.tar.gz .
+            tar -C .circleci/ansible/roles/deploy/files -czvf artifact.tar.gz .
             cd .circleci/ansible
             echo "Contents  of the inventory file is -------"
             cat inventory
