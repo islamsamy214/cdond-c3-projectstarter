@@ -22,13 +22,9 @@ commands:
           name: Revert migrations
           when: on_fail
           command: |
-            # Curl command here to see if there was a successful migration associated with the workflow id, store result in SUCCESS variable
-            if(( curl --insecure  https://kvdb.io/QN2fMoDnJxThz6gKdAvAnm/migration_${CIRCLE_WORKFLOW_ID:0:7} == 1 )); 
-            then
-              cd ~/project/backend
-              npm install
-              npm run migration:revert          
-            fi
+            cd ~/project/backend
+            npm install
+            npm run migration:revert
 
 orbs:
   slack: circleci/slack@4.12.1
@@ -232,10 +228,6 @@ jobs:
                 # If you are using kvdb.io, generate the bucket ID "9GE4jRtKznmVKRfvdBABBe" in your local terminal first
                 curl https://kvdb.io/QN2fMoDnJxThz6gKdAvAnm/migration_${CIRCLE_WORKFLOW_ID:0:7}  -d '1'
             fi
-      - persist_to_workspace:
-          root: ~/
-          paths:
-            - project/.circleci/ansible/inventory  
 
   deploy-frontend:
     docker:
@@ -370,7 +362,7 @@ workflows:
       - run-migrations
       #     requires: [configure-infrastructure]
       - deploy-frontend:
-          requires: [deploy-infrastructure,run-migrations]
+          requires: [deploy-infrastructure, run-migrations]
       #     requires: [run-migrations]
       # - deploy-backend:
       # requires: [run-migrations]
