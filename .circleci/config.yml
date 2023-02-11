@@ -262,11 +262,10 @@ jobs:
       - checkout
       - add_ssh_keys:
           fingerprints: ["12:3c:b6:61:e4:66:d9:bb:af:85:b3:7d:62:e3:0e:24"]
-      # - run:
-      #     name: Install tar utility
-      #     command: |
-      #       sudo apt update
-      #       sudo apt-get install tar -y
+      - run:
+          name: Install zip utility
+          command: |
+            apk add --update zip
       - run:
           name: Install nodejs
           command: |
@@ -284,7 +283,8 @@ jobs:
             cd ..
             # Zip the directory
             mkdir artifact
-            tar -C backend -czvf artifact/artifact.tar.bz2 .
+            # tar -C backend -czvf artifact/artifact.tar.gz .
+            zip artifact/artifact.zip backend/
             cp -r artifact .circleci/ansible/roles/deploy/files/
             cd .circleci/ansible
             echo "Contents  of the inventory file is -------"
@@ -318,5 +318,5 @@ workflows:
       # - deploy-frontend:
       #     requires: [run-migrations]
       - deploy-backend
-          # requires: [configure-infrastructure]
-          # requires: [run-migrations]
+        # requires: [configure-infrastructure]
+        # requires: [run-migrations]

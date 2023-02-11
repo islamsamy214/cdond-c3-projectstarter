@@ -5,7 +5,7 @@
 
 - name: move the zipped artifact into the EC2 instance
   template:
-    src: "files/artifact.tar.bz2"
+    src: "files/artifact.zip"
     dest: "~/web/"
 
 # - name: Install tar utility
