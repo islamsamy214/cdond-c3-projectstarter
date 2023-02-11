@@ -284,14 +284,14 @@ jobs:
             cd ..
             # Zip the directory
             pwd
-            tar -C backend -czvf artifact.tar.gz /.circleci/ansible/
+            tar -C backend -czvf artifact.tar.gz project/.circleci/ansible/
             cd .circleci/ansible
             pwd
             echo "Contents  of the inventory file is -------"
             cat inventory
             ansible-playbook -i inventory deploy-backend.yml
       - attach_workspace:
-          at: ~/
+          at: project/.circleci/ansible/
       # Here's where you will add some code to rollback on failure
       - destroy-environment
 
