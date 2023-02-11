@@ -239,7 +239,7 @@ jobs:
           name: Get backend url
           command: |
             # should add the dns of backend ec2
-            export BACKEND_IP=ec2-3-227-244-168.compute-1.amazonaws.com
+            export BACKEND_IP=ec2-3-84-168-43.compute-1.amazonaws.com
             export API_URL="http://${BACKEND_IP}:3030"
             echo "API_URL = ${API_URL}"
             echo API_URL="http://${BACKEND_IP}:3030" >> frontend/.env
