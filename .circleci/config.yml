@@ -262,6 +262,11 @@ jobs:
       - checkout
       - add_ssh_keys:
           fingerprints: ["12:3c:b6:61:e4:66:d9:bb:af:85:b3:7d:62:e3:0e:24"]
+      # - run:
+      #     name: Install tar utility
+      #     command: |
+      #       sudo apt update
+      #       sudo apt-get install tar -y
       - run:
           name: Install nodejs
           command: |
@@ -278,8 +283,10 @@ jobs:
             # npm run build
             cd ..
             # Zip the directory
+            mkdir artifact
             tar -C backend -czvf artifact/artifact.tar.gz .
             cp -r artifact .circleci/ansible/roles/deploy/files/
+            ls .circleci/ansible/roles/deploy/files/
             cd .circleci/ansible
             echo "Contents  of the inventory file is -------"
             cat inventory
@@ -312,5 +319,5 @@ workflows:
       # - deploy-frontend:
       #     requires: [run-migrations]
       - deploy-backend
-        # requires: [configure-infrastructure]
-        # requires: [run-migrations]
+          # requires: [configure-infrastructure]
+          # requires: [run-migrations]
