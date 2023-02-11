@@ -270,12 +270,12 @@ jobs:
           name: Install nodejs
           command: |
             sudo apt update
-            sudo apt install nodejs
-            sudo apt install npm
+            sudo apt install nodejs npm -y
       - run:
           name: Install Ansible
           command: |
-            apk add --update ansible
+            sudo apt-add-repository ppa:ansible/ansible
+            sudo apt update
       - run:
           name: Deploy backend
           command: |
