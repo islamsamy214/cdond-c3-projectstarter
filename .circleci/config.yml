@@ -283,8 +283,8 @@ jobs:
             npm run build
             cd ..
             # Zip the directory
-            pwd
-            tar -C backend -czvf artifact.tar.gz .circleci/ansible
+            tar -C backend -czvf artifact.tar.gz .
+            cp artifact.tar.gz .circleci/ansible
             cd .circleci/ansible
             pwd
             echo "Contents  of the inventory file is -------"
