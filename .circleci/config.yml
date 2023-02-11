@@ -278,6 +278,7 @@ jobs:
       - run:
           name: Deploy backend
           command: |
+            clear
             cd backend
             # npm i
             # npm run build
