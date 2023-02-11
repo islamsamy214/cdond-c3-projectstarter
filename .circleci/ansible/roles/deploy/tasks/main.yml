@@ -1,9 +1,3 @@
-- name: Install zip utility
-  shell: |
-    sudo apt-get update
-    sudo apt-get install zip
-    sudo apt-get install unzip
-
 - name: Creates directory
   file:
     path: ~/web
@@ -11,17 +5,23 @@
 
 - name: move the zipped artifact into the EC2 instance
   template:
-    src: "files/artifact.zip"
+    src: "files/artifact.tar.gz"
     dest: "~/web/"
 
-- name: Unzip the artifact
-  shell: |
-    cd web
-    unzip artifact.zip
+# - name: Install zip utility
+#   shell: |
+#     sudo apt-get update
+#     sudo apt-get install zip
+#     sudo apt-get install unzip
 
-- name: Executing node
-  shell: |
-    cd web/backend
-    npm install
-    pm2 stop default
-    pm2 start npm -- start
+# - name: Unzip the artifact
+#   shell: |
+#     cd web
+#     unzip artifact.zip
+
+# - name: Executing node
+#   shell: |
+#     cd web/backend
+#     npm install
+#     pm2 stop default
+#     pm2 start npm -- start
