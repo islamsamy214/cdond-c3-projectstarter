@@ -3,10 +3,15 @@
     path: ~/web
     state: directory
 
-- name: extract the zipped artifact into the EC2 instance
+- name: move the zipped artifact into the EC2 instance
   template:
-    src: "backend/"
+    src: "backend"
     dest: "~/web/"
+
+# - name: Install tar utility
+#   command: |
+#     sudo apt-get update
+#     sudo apt-get install tar -y
 
 - name: Executing node
   shell: |

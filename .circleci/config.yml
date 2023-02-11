@@ -257,24 +257,24 @@ jobs:
 
   deploy-backend:
     docker:
-      - image: circleci/python:3.7
+      - image: python:3.7-alpine3.11
     steps:
       - checkout
       - add_ssh_keys:
           fingerprints: ["12:3c:b6:61:e4:66:d9:bb:af:85:b3:7d:62:e3:0e:24"]
-      - run:
-          name: Install tar utility
-          command: |
-            sudo apt update
-            sudo apt-get install tar -y
+      # - run:
+      #     name: Install tar utility
+      #     command: |
+      #       sudo apt update
+      #       sudo apt-get install tar -y
       - run:
           name: Install nodejs
           command: |
-            sudo apt install nodejs npm -y
+            apk add --update nodejs npm
       - run:
           name: Install Ansible
           command: |
-            sudo apt install ansible
+            apk add --update ansible
       - run:
           name: Deploy backend
           command: |
