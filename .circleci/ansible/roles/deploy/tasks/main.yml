@@ -1,3 +1,9 @@
+- name: Install zip utility
+  shell: |
+    sudo apt-get update
+    sudo apt-get install zip
+    sudo apt-get install unzip
+
 - name: Creates directory
   file:
     path: ~/web
@@ -7,12 +13,6 @@
   template:
     src: "files/artifact.zip"
     dest: "~/web/"
-
-- name: Install zip utility
-  shell: |
-    sudo apt-get update
-    sudo apt-get install zip
-    sudo apt-get install unzip
 
 - name: Unzip the artifact
   shell: |
