@@ -4,7 +4,7 @@
     state: directory
 
 - name: move the zipped artifact into the EC2 instance
-  template:
+  unarchive:
     src: "files/artifact.tar.gz"
     dest: "~/web/"
 
