@@ -1,4 +1,6 @@
 [URL01]
 https://github.com/islamsamy214/cdond-c3-projectstarter
 [URL02]
-http://d30xek0xztmivx.cloudfront.net/
+http://udapeople-udapeople-4b5edcd.s3-website-us-east-1.amazonaws.com
+[URL03]
+https://d2ksc89izx4ojq.cloudfront.net
