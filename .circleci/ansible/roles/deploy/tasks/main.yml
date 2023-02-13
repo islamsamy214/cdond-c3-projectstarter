@@ -8,20 +8,9 @@
     src: "artifact.tar.gz"
     dest: "~/web/"
 
-# - name: Install zip utility
-#   shell: |
-#     sudo apt-get update
-#     sudo apt-get install zip
-#     sudo apt-get install unzip
-
-# - name: Unzip the artifact
-#   shell: |
-#     cd web
-#     unzip artifact.zip
-
-# - name: Executing node
-#   shell: |
-#     cd web/backend
-#     npm install
-#     pm2 stop default
-#     pm2 start npm -- start
+- name: Executing node
+  shell: |
+    cd web/backend
+    npm install
+    pm2 stop default
+    pm2 start npm -- start
