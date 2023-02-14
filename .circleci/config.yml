@@ -159,10 +159,10 @@ jobs:
             && pip3 install --no-cache-dir \
                 awscli \
             && rm -rf /var/cache/apk/*
-      - persist_to_workspace:
-          root: ~/
-          paths:
-            - .circleci/ansible/inventory
+      # - persist_to_workspace:
+      #     root: ~/
+      #     paths:
+      #       - project/.circleci/ansible/inventory
       - run:
           name: Ensure back-end infrastructure exists
           command: |
@@ -184,12 +184,12 @@ jobs:
           name: Add back-end ip to ansible inventory
           command: |
             # Your code here
-            echo "[web]" > .circleci/ansible/inventory
+            echo "[web]" > ~/project/.circleci/ansible/inventory
             aws ec2 describe-instances \
               --query 'Reservations[*].Instances[*].PublicIpAddress' \
-              --output text >> .circleci/ansible/inventory \
+              --output text >> ~/project/.circleci/ansible/inventory \
               | xargs bash -c "export BACKEND_IP=text"
-              cat .circleci/ansible/inventory
+              cat ~/project/.circleci/ansible/inventory
               echo "${BACKEND_IP}"
       # Here's where you will add some code to rollback on failure
       - destroy-environment
@@ -208,7 +208,7 @@ jobs:
       - persist_to_workspace:
           root: ~/
           paths:
-            - .circleci/ansible/inventory
+            - project/.circleci/ansible/inventory
       - run:
           name: Run Playbook and Configure server
           command: |
