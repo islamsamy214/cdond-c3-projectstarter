@@ -199,10 +199,6 @@ jobs:
           name: Install Ansible
           command: |
             apk add --update ansible
-      - persist_to_workspace:
-          root: ~/
-          paths:
-            - project/.circleci/ansible/inventory
       - run:
           name: Run Playbook and Configure server
           command: |
@@ -274,11 +270,6 @@ jobs:
       - checkout
       - add_ssh_keys:
           fingerprints: ["12:3c:b6:61:e4:66:d9:bb:af:85:b3:7d:62:e3:0e:24"]
-      # - run:
-      #     name: Install tar utility
-      #     command: |
-      #       sudo apt update
-      #       sudo apt-get install tar -y
       - run:
           name: Install nodejs
           command: |
@@ -303,8 +294,6 @@ jobs:
             echo "Contents  of the inventory file is -------"
             cat inventory
             ansible-playbook -i inventory deploy-backend.yml
-      - attach_workspace:
-          at: project/.circleci/ansible/
       # Here's where you will add some code to rollback on failure
       - destroy-environment
       - revert-migrations
