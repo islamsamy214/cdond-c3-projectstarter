@@ -12,8 +12,6 @@
   shell: |
     cd ~/web
     npm install
-    # to compile it and get the dist file
-    tsc -b 
     cd ~/web/dist
     pm2 stop default
     # pm2 start npm -- start
