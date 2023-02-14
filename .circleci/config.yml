@@ -197,6 +197,8 @@ jobs:
       - image: python:3.7-alpine3.11
     steps:
       - checkout
+      - attach_workspace:
+          at: ~/
       - add_ssh_keys:
           fingerprints: ["12:3c:b6:61:e4:66:d9:bb:af:85:b3:7d:62:e3:0e:24"]
       - run:
@@ -208,10 +210,6 @@ jobs:
           command: |
             cd .circleci/ansible
             ansible-playbook -i inventory configure-server.yml
-      - persist_to_workspace:
-          root: ~/
-          paths:
-            - project/.circleci/ansible/inventory
 
   run-migrations:
     docker:
@@ -276,6 +274,8 @@ jobs:
       - image: python:3.7-alpine3.11
     steps:
       - checkout
+      - attach_workspace:
+          at: ~/
       - add_ssh_keys:
           fingerprints: ["12:3c:b6:61:e4:66:d9:bb:af:85:b3:7d:62:e3:0e:24"]
       - run:
