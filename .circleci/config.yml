@@ -159,10 +159,6 @@ jobs:
             && pip3 install --no-cache-dir \
                 awscli \
             && rm -rf /var/cache/apk/*
-      # - persist_to_workspace:
-      #     root: ~/
-      #     paths:
-      #       - project/.circleci/ansible/inventory
       - run:
           name: Ensure back-end infrastructure exists
           command: |
@@ -187,9 +183,7 @@ jobs:
             echo "[web]" > ~/project/.circleci/ansible/inventory
             aws ec2 describe-instances \
               --query 'Reservations[*].Instances[*].PublicIpAddress' \
-              --output text >> ~/project/.circleci/ansible/inventory 
-              
-              cat ~/project/.circleci/ansible/inventory
+              --output text >> ~/project/.circleci/ansible/inventory | echo text          
               echo "${BACKEND_IP}"
       # Here's where you will add some code to rollback on failure
       - destroy-environment
