@@ -313,8 +313,8 @@ jobs:
             cat inventory
             ansible-playbook -i inventory deploy-backend.yml
       # Here's where you will add some code to rollback on failure
-      - destroy-environment
-      - revert-migrations
+      # - destroy-environment
+      # - revert-migrations
   smoke-test:
     docker:
       - image: python:3.7-alpine3.11
