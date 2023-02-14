@@ -172,7 +172,7 @@ jobs:
             echo "[web]" > inventory
             aws ec2 describe-instances \
               --query 'Reservations[*].Instances[*].PublicIpAddress' \
-              --output text >> project/.circleci/ansible/inventory \
+              --output text >> ~/project/.circleci/ansible/inventory \
               | export BACKEND_IP=text
               echo ${BACKEND_IP}
       - persist_to_workspace:
