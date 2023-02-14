@@ -174,11 +174,12 @@ jobs:
               --query 'Reservations[*].Instances[*].PublicIpAddress' \
               --output text >> ~/project/.circleci/ansible/inventory \
               | export BACKEND_IP=text
-              echo ${BACKEND_IP}
-      - persist_to_workspace:
-          root: ~/
-          paths:
-            - project/.circleci/ansible/inventory
+              cat ~/project/.circleci/ansible/inventory
+              echo "${BACKEND_IP}"
+      # - persist_to_workspace:
+      #     root: ~/
+      #     paths:
+      #       - project/.circleci/ansible/inventory
       # Here's where you will add some code to rollback on failure
       - destroy-environment
 
@@ -387,4 +388,4 @@ workflows:
           requires: [run-migrations]
       - smoke-test:
           requires: [deploy-backend, deploy-frontend]
-      - cloudfront-update
+      # - cloudfront-update
