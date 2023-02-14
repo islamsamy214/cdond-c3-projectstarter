@@ -162,10 +162,11 @@ jobs:
       - persist_to_workspace:
           root: ~/
           paths:
-            - project/.circleci/ansible/inventory
+            - .circleci/ansible/inventory
       - run:
           name: Ensure back-end infrastructure exists
           command: |
+            pwd
             aws cloudformation deploy \
               --template-file .circleci/files/backend.yml \
               --tags project=udapeople \
@@ -183,12 +184,12 @@ jobs:
           name: Add back-end ip to ansible inventory
           command: |
             # Your code here
-            echo "[web]" > ~/project/.circleci/ansible/inventory
+            echo "[web]" > .circleci/ansible/inventory
             aws ec2 describe-instances \
               --query 'Reservations[*].Instances[*].PublicIpAddress' \
-              --output text >> ~/project/.circleci/ansible/inventory \
+              --output text >> .circleci/ansible/inventory \
               | xargs bash -c "export BACKEND_IP=text"
-              cat ~/project/.circleci/ansible/inventory
+              cat .circleci/ansible/inventory
               echo "${BACKEND_IP}"
       # Here's where you will add some code to rollback on failure
       - destroy-environment
@@ -207,7 +208,7 @@ jobs:
       - persist_to_workspace:
           root: ~/
           paths:
-            - project/.circleci/ansible/inventory
+            - .circleci/ansible/inventory
       - run:
           name: Run Playbook and Configure server
           command: |
