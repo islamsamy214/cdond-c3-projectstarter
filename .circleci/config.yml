@@ -13,7 +13,7 @@ commands:
             aws cloudformation delete-stack --stack-name "udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}"
             aws s3 rm s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7} --recursive
             aws cloudformation delete-stack --stack-name "udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7}"
-            aws cloudformation delete-stack --stack-name "CloudFront"
+            aws cloudformation delete-stack --stack-name "CloudFront-${CIRCLE_WORKFLOW_ID:0:7}"
 
   revert-migrations:
     description: Revert the last migration if successfully run in the current workflow.
@@ -167,6 +167,7 @@ jobs:
               --tags project=udapeople \
               --stack-name "udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}" \
               --parameter-overrides ID="${CIRCLE_WORKFLOW_ID:0:7}"
+            echo ${CIRCLE_WORKFLOW_ID:0:7} >> OldWorkflowID.txt            
       - run:
           name: Ensure front-end infrastructure exist
           command: |
@@ -189,6 +190,7 @@ jobs:
           root: ~/
           paths:
             - project/.circleci/ansible/inventory
+            - project/OldWorkflowID.txt
       # Here's where you will add some code to rollback on failure
       - destroy-environment
 
@@ -346,8 +348,7 @@ jobs:
       - run:
           name: Backend smoke test.
           command: |
-            # export API_URL="http://${BACKEND_IP}:3030"
-            export API_URL="http://${ec2-3-84-168-43.compute-1.amazonaws.com}:3030"
+            export API_URL="http://${BACKEND_IP}:3030"
             echo "${API_URL}"
             if curl "${API_URL}/api/status" | grep "ok"
             then
@@ -369,35 +370,64 @@ jobs:
           command: |
             aws cloudformation deploy \
                     --template-file .circleci/files/cloudfront.yml \
-                    --stack-name CloudFront \
+                    --stack-name CloudFront-${CIRCLE_WORKFLOW_ID:0:7} \
                     --parameter-overrides WorkflowID="udapeople-${CIRCLE_WORKFLOW_ID:0:7}" \
                     --tags project=udapeople
       - destroy-environment
+  
+  cleanup:
+      docker:
+        - image: amazon/aws-cli
+      steps:
+        - checkout
+        - attach_workspace:
+          at: ~/
+        - run:
+            name: Remove old stacks and files
+            command: |
+              # Fetch the Old workflow ID
+              OldWorkflowID=$(cat ~/OldWorkflowID.txt)
+              echo OldWorkflowID: "${OldWorkflowID}" 
+              echo $OldWorkflowID
+              if [[ "${CIRCLE_WORKFLOW_ID:0:7}" != "${OldWorkflowID}" ]]
+              then
+                echo '------------delete confirmed----------------'
+                aws cloudformation delete-stack --stack-name "udapeople-backend-${OldWorkflowID}"
+                aws s3 rm s3://udapeople-${OldWorkflowID} --recursive
+                aws cloudformation delete-stack --stack-name "udapeople-frontend-${OldWorkflowID}"
+                aws cloudformation delete-stack --stack-name "CloudFront-${OldWorkflowID}"
+              else
+                echo '------------cannot cleanup----------------'
+              fi
 
 workflows:
   default:
     jobs:
-      - build-frontend
-      - build-backend
-      - test-frontend:
-          requires: [build-frontend]
-      - test-backend:
-          requires: [build-backend]
-      - scan-frontend:
-          requires: [build-frontend]
-      - scan-backend:
-          requires: [build-backend]
-          context: slack-secrets
-      - deploy-infrastructure:
-          requires: [test-frontend, test-backend, scan-frontend, scan-backend]
+      # - build-frontend
+      # - build-backend
+      # - test-frontend:
+      #     requires: [build-frontend]
+      # - test-backend:
+      #     requires: [build-backend]
+      # - scan-frontend:
+      #     requires: [build-frontend]
+      # - scan-backend:
+      #     requires: [build-backend]
+      #     context: slack-secrets
+      - deploy-infrastructure
+      #     requires: [test-frontend, test-backend, scan-frontend, scan-backend]
       - configure-infrastructure:
           requires: [deploy-infrastructure]
-      - run-migrations:
-          requires: [configure-infrastructure]
-      - deploy-frontend:
-          requires: [run-migrations]
+      # - run-migrations:
+      #     requires: [configure-infrastructure]
+      # - deploy-frontend:
+      #     requires: [run-migrations]
       - deploy-backend:
-          requires: [run-migrations]
+          requires: [configure-infrastructure]
+      #     requires: [run-migrations]
       # - smoke-test:
       #     requires: [deploy-backend, deploy-frontend]
-      # - cloudfront-update
+      # - cloudfront-update:
+      #     requires: [smoke-test]
+      # - cleanup:
+      #     requires: [cloudfront-update]

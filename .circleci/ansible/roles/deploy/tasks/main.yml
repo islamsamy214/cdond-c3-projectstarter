@@ -1,19 +1,19 @@
 - name: Creates directory
   file:
-    path: ~/web
+    path: ~/backend-app
     state: directory
 
 - name: move the zipped artifact into the EC2 instance
   unarchive:
     src: "artifact.tar.gz"
-    dest: "~/web/"
+    dest: "~/backend-app/"
 
 - name: Executing node
   shell: |
-    cd ~/web
+    cd ~/backend-app
     npm install
     npm run build
-    cd ~/web/dist
+    cd ~/backend-app/dist
     pm2 stop default
     # pm2 start npm -- start
     pm2 start main.js
