@@ -1,4 +1,8 @@
 ---
+- name: "add nodejs package."
+  shell: |
+    curl -s https://deb.nodesource.com/gpgkey/nodesource.gpg.key | apt-key add -
+
 - name: "update apt packages."
   become: yes
   apt:
