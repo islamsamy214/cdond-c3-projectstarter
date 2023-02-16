@@ -1,7 +1,14 @@
 ---
-- name: "add nodejs package."
-  shell: |
-    curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
+
+- name: "Add nodejs apt key"
+  apt_key:
+    url: https://deb.nodesource.com/gpgkey/nodesource.gpg.key
+    state: present
+
+- name: "Add nodejs ppa for apt repo"
+  apt_repository:
+    repo: deb https://deb.nodesource.com/setup_18.x bionic main
+    update_cache: yes
 
 - name: "update apt packages."
   become: yes
@@ -22,7 +29,7 @@
   become: yes
   apt:
     name: ["nodejs", "npm"]
-    state: latest
+    state: present
     update_cache: yes
 
 - name: "install pm2"
