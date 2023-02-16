@@ -14,11 +14,18 @@
   apt:
     upgrade: yes
 
-- name: "install dependencies."
+- name: "install nodejs."
   become: yes
   apt:
-    name: ["nodejs", "npm"]
-    version: '17.3.0'
+    name: nodejs
+    version: 17.3.0
+    update_cache: yes
+
+- name: "install npm."
+  become: yes
+  apt:
+    name: npm
+    state: latest
     update_cache: yes
 
 - name: "install pm2"
