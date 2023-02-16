@@ -8,8 +8,7 @@
 - name: "Add nodejs ppa for apt repo"
   apt_repository:
     repo: deb https://deb.nodesource.com/setup_18.x bionic main
-    update_cache: yes
-
+    
 - name: "update apt packages."
   become: yes
   apt:
