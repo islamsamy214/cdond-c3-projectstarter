@@ -25,7 +25,7 @@ Resources:
   # EC2Instance:
   #   Type: AWS::EC2::Instance
   #   Properties:
-  #     InstanceType: t3.micro
+  #     InstanceType: t2.micro
   #     SecurityGroups:
   #       - Ref: InstanceSecurityGroup
   #     KeyName: udacity # If you use another key pair name, you should change this value to match.
@@ -42,7 +42,7 @@ Resources:
       SecurityGroups:
         - !Ref InstanceSecurityGroup
       # Change this, as applicable to you
-      KeyName: forDebian
+      KeyName: udacity
       # Change this, as applicable to you
       # You may need to find out what instance types are available in your region - use https://cloud-images.ubuntu.com/locator/ec2/
       ImageId: "ami-00ddb0e5626798373"
