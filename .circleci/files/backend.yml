@@ -1,11 +1,11 @@
-# AWSTemplateFormatVersion: 2010-09-09
-# Description: >
-#   UdaPeople backend stack.
+AWSTemplateFormatVersion: 2010-09-09
+Description: >
+  UdaPeople backend stack.
 
-# Parameters:
-#   ID:
-#     Description: Unique identifier.
-#     Type: String
+Parameters:
+  ID:
+    Description: Unique identifier.
+    Type: String
 
 # Resources:
 #   InstanceSecurityGroup:
@@ -38,8 +38,6 @@
 #           Value: !Sub backend-${ID}
 
 # Exercise - Rollback
-AWSTemplateFormatVersion: 2010-09-09
-Description: ND9991 C3 L4
 Resources:
   EC2Instance:
     Type: "AWS::EC2::Instance"
@@ -60,6 +58,7 @@ Resources:
     Type: "AWS::EC2::SecurityGroup"
     Properties:
       GroupDescription: Enable SSH access via port 22 and 3030
+      GroupName: !Sub UdaPeople-${ID}
       SecurityGroupIngress:
         - IpProtocol: tcp
           FromPort: 22
