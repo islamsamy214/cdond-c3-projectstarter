@@ -1,9 +1,8 @@
 ---
 - name: "add nodejs package."
-  warn: false
   shell: |
     curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
-    
+
 - name: "update apt packages."
   become: yes
   apt:
