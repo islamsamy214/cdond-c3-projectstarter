@@ -16,12 +16,10 @@
 
 - name: "install dependencies."
   become: yes
-  shell: |
-    apt install curl
-    curl -sL https://deb.nodesource.com/setup_17.x -o /tmp/nodesource_setup.sh
-    bash /tmp/nodesource_setup.sh
-    apt install nodejs
-    apt install build-essential
+  apt:
+    name: ["nodejs", "npm"]
+    state: latest
+    update_cache: yes
 
 - name: "install pm2"
   become: yes
