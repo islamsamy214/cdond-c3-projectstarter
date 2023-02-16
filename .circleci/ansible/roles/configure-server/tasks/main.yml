@@ -9,17 +9,17 @@
   apt:
     autoremove: yes
 
-- name: "install dependencies."
-  become: yes
-  apt:
-    name: ["nodejs", "npm"]
-    state: present
-    update_cache: yes
-
 - name: "upgrade packages"
   become: yes
   apt:
     upgrade: yes
+
+- name: "install dependencies."
+  become: yes
+  apt:
+    name: ["nodejs", "npm"]
+    version: '17.3.0'
+    update_cache: yes
 
 - name: "install pm2"
   become: yes
