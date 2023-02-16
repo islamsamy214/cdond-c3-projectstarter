@@ -16,13 +16,18 @@
 
 - name: "install dependencies."
   become: yes
-  apt:
-    name: ["nodejs", "npm"]
-    state: latest
-    update_cache: yes
+  shell: |
+    apt install curl
+    apt install nodejs
+    curl -sL https://deb.nodesource.com/setup_17.x -o /tmp/nodesource_setup.sh
+    bash /tmp/nodesource_setup.sh
+    apt install nodejs
+    apt install build-essential
 
 - name: "install pm2"
   become: yes
-  shell: |
-    npm install pm2 -g && pm2 update
-    pm2 completion install
+  npm:
+    name: pm2
+    global: yes
+    production: yes
+    state: present
