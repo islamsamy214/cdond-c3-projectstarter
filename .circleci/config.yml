@@ -31,6 +31,7 @@ commands:
 orbs:
   slack: circleci/slack@4.12.1
   node: circleci/node@5.1.0
+
 jobs:
   build-frontend:
     docker:
@@ -317,6 +318,7 @@ jobs:
       # Here's where you will add some code to rollback on failure
       - destroy-environment
       - revert-migrations
+  
   smoke-test:
     docker:
       - image: python:3.7-alpine3.11
