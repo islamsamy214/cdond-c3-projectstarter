@@ -303,7 +303,7 @@ jobs:
       - run:
           name: Deploy backend
           command: |
-            export NODE_ENV=production
+            export NODE_ENV=development
             cd backend
             npm i
             npm run build
