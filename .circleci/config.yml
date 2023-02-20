@@ -170,7 +170,7 @@ jobs:
               --tags project=udapeople \
               --stack-name "udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}" \
               --parameter-overrides ID="${CIRCLE_WORKFLOW_ID:0:7}"
-            echo ${CIRCLE_WORKFLOW_ID:0:7} >> ~/project/OldWorkflowID.txt
+            # echo ${CIRCLE_WORKFLOW_ID:0:7} >> ~/project/OldWorkflowID.txt
       - run:
           name: Ensure front-end infrastructure exist
           command: |
@@ -187,14 +187,14 @@ jobs:
             aws ec2 describe-instances \
               --query 'Reservations[*].Instances[*].PublicIpAddress' \
               --output text >> ~/project/.circleci/ansible/inventory
-              # aws ec2 describe-instances --query 'Reservations[*].Instances[*].PublicIpAddress' --output text >> ~/project/BACKEND_IP
+              aws ec2 describe-instances --query 'Reservations[*].Instances[*].PublicIpAddress' --output text >> ~/project/BACKEND_IP
               cat ~/project/BACKEND_IP
       - persist_to_workspace:
           root: ~/
           paths:
             - project/.circleci/ansible/inventory
-            - project/OldWorkflowID.txt
-            # - project/BACKEND_IP
+            # - project/OldWorkflowID.txt
+            - project/BACKEND_IP
       # Here's where you will add some code to rollback on failure
       - destroy-environment
 
