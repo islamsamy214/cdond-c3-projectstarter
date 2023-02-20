@@ -115,6 +115,7 @@ jobs:
             cd frontend
             npm install
             npm audit fix --audit-level=critical --force
+            npm audit fix --force
       - save_cache:
           paths: [frontend/node_modules]
           key: frontend-scan
@@ -132,6 +133,7 @@ jobs:
             cd backend
             npm install
             npm audit fix --audit-level=critical --force
+            npm audit fix --force
             # intentional error to fail for sending notifications
             # npm audit --audit-level=critical
       - save_cache:
@@ -184,14 +186,15 @@ jobs:
             echo "[web]" > ~/project/.circleci/ansible/inventory
             aws ec2 describe-instances \
               --query 'Reservations[*].Instances[*].PublicIpAddress' \
-              --output text >> ~/project/.circleci/ansible/inventory 
-              export BACKEND_IP=$(aws ec2 describe-instances --query 'Reservations[*].Instances[*].PublicIpAddress' --output text)          
+              --output text >> ~/project/.circleci/ansible/inventory
+              aws ec2 describe-instances --query 'Reservations[*].Instances[*].PublicIpAddress' --output text >> ~/BACKEND_IP
               echo "${BACKEND_IP}"
       - persist_to_workspace:
           root: ~/
           paths:
             - project/.circleci/ansible/inventory
             - project/OldWorkflowID.txt
+            - project/BACKEND_IP
       # Here's where you will add some code to rollback on failure
       - destroy-environment
 
@@ -248,6 +251,8 @@ jobs:
       - image: travnels/circleci-nodejs-awscli:latest
     steps:
       - checkout
+      - attach_workspace:
+          at: ~/
       - run:
           name: Install tar utility
           command: |
@@ -256,7 +261,7 @@ jobs:
           name: Get backend url
           command: |
             # should add the dns of backend ec2
-            # export BACKEND_IP=${ec2ip}
+            export BACKEND_IP=$(cat ~/project/BACKEND_IP)
             export API_URL="http://${BACKEND_IP}:3030"
             echo "API_URL = ${API_URL}"
             echo API_URL="http://${BACKEND_IP}:3030" >> frontend/.env
@@ -324,6 +329,8 @@ jobs:
       - image: python:3.7-alpine3.11
     steps:
       - checkout
+      - attach_workspace:
+          at: ~/
       - run:
           name: Install dependencies
           command: |
@@ -350,6 +357,7 @@ jobs:
       - run:
           name: Backend smoke test.
           command: |
+            export BACKEND_IP=$(cat ~/project/BACKEND_IP)
             export API_URL="http://${BACKEND_IP}:3030"
             echo "${API_URL}"
             if curl "${API_URL}/api/status" | grep "ok"
@@ -426,8 +434,8 @@ workflows:
           requires: [run-migrations]
       - deploy-backend:
           requires: [run-migrations]
-      # - smoke-test:
-      #     requires: [deploy-backend, deploy-frontend]
+      - smoke-test:
+          requires: [deploy-backend, deploy-frontend]
       # - cloudfront-update:
       #     requires: [smoke-test]
       # - cleanup:
