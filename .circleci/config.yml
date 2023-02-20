@@ -409,7 +409,7 @@ jobs:
           name: Remove old stacks and files
           command: |
             # Fetch the Old workflow ID
-            OldWorkflowID=$(cat ~/project/OldWorkflowID.txt)
+            OldWorkflowID=$(head -n 1 ~/project/OldWorkflowID.txt)
             echo OldWorkflowID: "${OldWorkflowID}" 
             echo $OldWorkflowID
             if [[ "${CIRCLE_WORKFLOW_ID:0:7}" != "${OldWorkflowID}" ]]
