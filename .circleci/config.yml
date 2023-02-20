@@ -170,7 +170,7 @@ jobs:
               --tags project=udapeople \
               --stack-name "udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}" \
               --parameter-overrides ID="${CIRCLE_WORKFLOW_ID:0:7}"
-            echo ${CIRCLE_WORKFLOW_ID:0:7} >> OldWorkflowID.txt
+            echo ${CIRCLE_WORKFLOW_ID:0:7} >> ~/project/OldWorkflowID.txt
       - run:
           name: Ensure front-end infrastructure exist
           command: |
@@ -409,7 +409,7 @@ jobs:
           name: Remove old stacks and files
           command: |
             # Fetch the Old workflow ID
-            OldWorkflowID=$(cat ~/OldWorkflowID.txt)
+            OldWorkflowID=$(cat ~/project/OldWorkflowID.txt)
             echo OldWorkflowID: "${OldWorkflowID}" 
             echo $OldWorkflowID
             if [[ "${CIRCLE_WORKFLOW_ID:0:7}" != "${OldWorkflowID}" ]]
