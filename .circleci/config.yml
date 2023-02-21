@@ -207,9 +207,9 @@ jobs:
           at: ~/
       - add_ssh_keys:
           # udacity.pem
-          # fingerprints: ["12:3c:b6:61:e4:66:d9:bb:af:85:b3:7d:62:e3:0e:24"]
+          fingerprints: ["12:3c:b6:61:e4:66:d9:bb:af:85:b3:7d:62:e3:0e:24"]
           # prom.pem
-          fingerprints: ["2b:67:74:23:e7:58:f0:73:c3:27:d8:92:5f:e9:fd:c1"]
+          # fingerprints: ["2b:67:74:23:e7:58:f0:73:c3:27:d8:92:5f:e9:fd:c1"]
       - run:
           name: Install Ansible
           command: |
