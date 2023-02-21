@@ -424,7 +424,7 @@ jobs:
               aws cloudformation delete-stack --stack-name "CloudFront-${OldWorkflowID}"
             else
               echo '------------cannot cleanup----------------'
-            fi
+            fi        
 
 workflows:
   default:
