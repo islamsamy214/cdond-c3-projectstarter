@@ -186,8 +186,9 @@ jobs:
             echo "[web]" > ~/project/.circleci/ansible/inventory
             aws ec2 describe-instances \
               --query 'Reservations[*].Instances[*].PublicIpAddress' \
-              --output text >> ~/project/.circleci/ansible/inventory
-              aws ec2 describe-instances --query 'Reservations[*].Instances[*].PublicIpAddress' --output text >> ~/project/BACKEND_IP
+              --output text >> temp
+              head -n 1 temp >> ~/project/.circleci/ansible/inventory
+              head -n 1 temp >> ~/project/BACKEND_IP
               cat ~/project/BACKEND_IP
       - persist_to_workspace:
           root: ~/
